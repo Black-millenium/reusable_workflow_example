@@ -3,26 +3,18 @@ name: Reusable workflow
 on: workflow_call
 
 jobs:
-  pr_created_job:
-    if: github.event.pull_request.type.opened == true
+  docs_changed_job:
     runs-on: ubuntu-latest
     
     steps:
-      - name: PR created
-        run: echo "PR created"
-#-------------------------------------------------
-  pr_merged_job:
-    if: github.event.pull_request.merged == true
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: PR merged
-        run: echo "PR merged"
-#-------------------------------------------------        
-  pr_declined_job:
-    if: github.event.pull_request.merged == false
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: PR declined
-        run: echo "PR declined"
+      - name: Check changed files
+        uses: dorny/paths-filter@v2
+        id: docs-changes
+        with:
+          filters: |
+            docs:
+              - 'docs/**/*.md'
+      
+      - name: Start job because docs was changed
+        if: steps.docs-changes.outputs.docs == 'true'
+        run: echo "Docs was changed"
