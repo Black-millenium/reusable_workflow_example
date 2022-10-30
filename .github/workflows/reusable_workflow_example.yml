@@ -27,6 +27,9 @@ jobs:
     if: ${{ needs.check_docs_changes.outputs.docs_changed }} == 'true'
     
     steps:
+      - name: Print variable
+        run: echo ${{ needs.check_docs_changes.outputs.docs_changed }}
+    
       - name: Process changed docs
         run: echo "Process docs"
     
