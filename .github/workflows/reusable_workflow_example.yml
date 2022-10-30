@@ -27,4 +27,4 @@ jobs:
     
     steps:
       - name: Print variable
-        run: echo ${{needs.check_docs_changes.outputs.docs_changed}}
+        run: echo ${{needs.check_docs_changes.outputs}}
