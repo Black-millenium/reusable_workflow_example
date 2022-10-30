@@ -7,9 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       docs_changed: ${{ steps.docs-changes.outputs.docs }}
-      docs_added_list: ${{ steps.docs-changes.outputs.added_files }}
-      docs_modified_list: ${{ steps.docs-changes.outputs.modified_files }}
-      docs_deleted_list: ${{ steps.docs-changes.outputs.deleted_files }}
+      docs_changed_list: ${{ steps.docs-changes.outputs.docs_files }}
     
     steps:
       - name: Check changed files
@@ -20,12 +18,6 @@ jobs:
           filters: |
             docs:
               - 'docs/**/*.md'
-            added:
-              - added: 'docs/**/*.md'
-            deleted:
-              - deleted: 'docs/**/*.md'
-            modified:
-              - modified: 'docs/**/*.md'
     
   process_changed_docs_job:
     runs-on: ubuntu-latest
@@ -33,13 +25,8 @@ jobs:
     if: needs.check_docs_changes.outputs.docs_changed == 'true'
     strategy:
       matrix:
-        added: ${{ fromJSON(needs.check_docs_changes.outputs.docs_added_list) }}
-        modified: ${{ fromJSON(needs.check_docs_changes.outputs.docs_modified_list) }}
-        deleted: ${{ fromJSON(needs.check_docs_changes.outputs.docs_deleted_list) }}
+        md_file: ${{ fromJSON(needs.check_docs_changes.outputs.docs_changed_list) }}
     
     steps:
       - name: Print matrix from new process
-        run: |
-          echo "${{ matrix.added }}"
-          echo "${{ matrix.modified }}"
-          echo "${{ matrix.deleted }}"
+        run: echo "${{ matrix.md_file }}"
