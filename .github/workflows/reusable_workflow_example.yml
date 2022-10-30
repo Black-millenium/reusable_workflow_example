@@ -7,8 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       docs_changed: ${{ steps.docs-changes.outputs.docs }}
-      docs_changed_list: ${{ steps.docs-changes.outputs.docs_modified_files }}
-      docs_modified_list: ${{ steps.docs-changes.outputs.docs_files }}
+      docs_changed_list: ${{ steps.docs-changes.outputs.docs_files }}
+      docs_modified_list: ${{ steps.docs-changes.outputs.docs_modified_files }}
       docs_added_list: ${{ steps.docs-changes.outputs.docs_added_files }}
       docs_deleted_list: ${{ steps.docs-changes.outputs.docs_deleted_files }}
     
