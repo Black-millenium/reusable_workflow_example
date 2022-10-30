@@ -7,6 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       docs_changed: ${{ steps.docs-changes.outputs.docs }}
+      docs_changed_files: ${{ steps.docs-changes.outputs.docs_files }}
       docs_added_list: ${{ steps.docs-changes.outputs.added_files }}
       docs_modified_list: ${{ steps.docs-changes.outputs.modified_files }}
       docs_deleted_list: ${{ steps.docs-changes.outputs.deleted_files }}
@@ -33,13 +34,11 @@ jobs:
     if: needs.check_docs_changes.outputs.docs_changed == 'true'
     strategy:
       matrix:
-        added: ${{ fromJSON(needs.check_docs_changes.outputs.added_files) }}
-        modified: ${{ fromJSON(needs.check_docs_changes.outputs.modified_files) }}
-        deleted: ${{ fromJSON(needs.check_docs_changes.outputs.deleted_files) }}
+        md_file: ${{ fromJSON(needs.check_docs_changes.outputs.docs_files) }}
+#        added: ${{ fromJSON(needs.check_docs_changes.outputs.added_files) }}
+#        modified: ${{ fromJSON(needs.check_docs_changes.outputs.modified_files) }}
+#        deleted: ${{ fromJSON(needs.check_docs_changes.outputs.deleted_files) }}
     
     steps:
       - name: Print matrix from new process
-        run: |
-          echo "${{ matrix.added }}"
-          echo "${{ matrix.modified }}"
-          echo "${{ matrix.deleted }}"
+        run: echo "${{ matrix.md_file }}"
