@@ -43,4 +43,6 @@ jobs:
           cat output | awk -F__ '/^A__/ { print $2 }' 
           cat output | awk -F__ '/^M__/ { print $2 }' 
           cat output | awk -F__ '/^D__/ { print $2 }' 
-
+          
+      - name: Print matrix from new process
+        run: echo "${{ matrix.md_file }}"
