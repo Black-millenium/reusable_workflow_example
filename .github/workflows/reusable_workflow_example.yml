@@ -37,9 +37,18 @@ jobs:
         md_file: ${{ fromJSON(needs.check_docs_changes.outputs.docs_changed_list) }}
     
     steps:
-      - name: Print matrix from new process
+      - name: Check added files
+        if: ${{ contains(fromJSON(needs.check_docs_changes.outputs.docs_added_list), md_file) }} == 'true'
+        run: "echo ENV_OPERATION=add" >> $GITHUB_ENV
+        
+      - name: Check modified files
+        if: ${{ contains(fromJSON(needs.check_docs_changes.outputs.docs_modified_list), md_file) }} == 'true'
+        run: "echo ENV_OPERATION=update" >> $GITHUB_ENV
+        
+      - name: Check deleted files
+        if: ${{ contains(fromJSON(needs.check_docs_changes.outputs.docs_deleted_list), md_file) }} == 'true'
+        run: "echo ENV_OPERATION=delete" >> $GITHUB_ENV
+        
+      - name: Print info
         run: |
-          echo "${{ matrix.md_file }}"
-          echo "${{ fromJSON(needs.check_docs_changes.outputs.docs_added_list) }}"
-          echo "${{ fromJSON(needs.check_docs_changes.outputs.docs_modified_list) }}"
-          echo "${{ fromJSON(needs.check_docs_changes.outputs.docs_deleted_list) }}"
+          echo "Operation: ${{ env.ENV_OPERATION }}; File: ${{ matrix.md_file }}"
