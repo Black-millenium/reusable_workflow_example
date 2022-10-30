@@ -6,7 +6,7 @@ jobs:
   check_docs_changes:
     runs-on: ubuntu-latest
     outputs:
-      docs_changed: ${{steps.docs-changes.outputs.changed}}
+      docs_changed: ${{steps.docs-changes.outputs.docs}}
     
     steps:
       - name: Check changed files
@@ -17,13 +17,8 @@ jobs:
             docs:
               - 'docs/**/*.md'
       
-      - name: Write true check result to output
-        if: steps.docs-changes.outputs.docs == 'true'
-        run: echo "changed='true'" >> $GITHUB_OUTPUT
-        
-      - name: Write false check result to output
-        if: steps.docs-changes.outputs.docs == 'false'
-        run: echo "changed='false'" >> $GITHUB_OUTPUT
+      - name: Write check result to output
+        run: echo "changed=${{ steps.docs-changes.outputs.docs }}" >> $GITHUB_OUTPUT
 
   process_changed_docs_job:
     runs-on: ubuntu-latest
