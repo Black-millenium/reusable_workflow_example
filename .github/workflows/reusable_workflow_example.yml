@@ -7,7 +7,10 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       docs_changed: ${{ steps.docs-changes.outputs.docs }}
-      docs_changed_list: ${{ steps.docs-changes.outputs.docs_files }}
+      docs_changed_list: ${{ steps.docs-changes.outputs.docs_modified_files }}
+      docs_modified_list: ${{ steps.docs-changes.outputs.docs_files }}
+      docs_added_list: ${{ steps.docs-changes.outputs.docs_added_files }}
+      docs_deleted_list: ${{ steps.docs-changes.outputs.docs_deleted_files }}
     
     steps:
       - name: Check changed files
@@ -18,6 +21,12 @@ jobs:
           filters: |
             docs:
               - 'docs/**/*.md'
+            docs_modified:
+              - modified: 'docs/**/*.md'
+            docs_added:
+              - added: 'docs/**/*.md'   
+            docs_deleted:
+              - deleted: 'docs/**/*.md'            
     
   process_changed_docs_job:
     runs-on: ubuntu-latest
@@ -29,4 +38,6 @@ jobs:
     
     steps:
       - name: Print matrix from new process
-        run: echo "${{ matrix.md_file }}"
+        run: |
+          echo "${{ matrix.md_file }}"
+          echo "${{ needs.check_docs_changes.outputs.docs_added_list }}"
