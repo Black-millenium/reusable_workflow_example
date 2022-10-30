@@ -39,4 +39,7 @@ jobs:
     
     steps:
       - name: Print matrix from new process
-        run: echo "${{ matrix.md_file }}"
+        run: |
+          echo "${{ matrix.added }}"
+          echo "${{ matrix.modified }}"
+          echo "${{ matrix.deleted }}"
