@@ -18,7 +18,7 @@ jobs:
               - 'docs/**/*.md'
       
       - name: Write check result to output
-        run: echo "changed=${{steps.docs-changes.outputs.docs}}" >> $GITHUB_OUTPUT
+        run: echo "changed='${{steps.docs-changes.outputs.docs}}'" >> $GITHUB_OUTPUT
 
   process_changed_docs_job:
     runs-on: ubuntu-latest
@@ -27,4 +27,4 @@ jobs:
     
     steps:
       - name: Print variable
-        run: echo ${{needs.check_docs_changes.outputs}}
+        run: echo ${{needs.check_docs_changes.outputs.docs_changed}}
