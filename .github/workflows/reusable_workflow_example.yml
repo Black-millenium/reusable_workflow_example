@@ -34,10 +34,10 @@ jobs:
     if: needs.check_docs_changes.outputs.docs_changed == 'true'
     strategy:
       matrix:
-        md_file: ${{ fromJSON(needs.check_docs_changes.outputs.docs_files) }}
-#        added: ${{ fromJSON(needs.check_docs_changes.outputs.added_files) }}
-#        modified: ${{ fromJSON(needs.check_docs_changes.outputs.modified_files) }}
-#        deleted: ${{ fromJSON(needs.check_docs_changes.outputs.deleted_files) }}
+        md_file: ${{ fromJSON(needs.check_docs_changes.outputs.docs_changed_files) }}
+#        added: ${{ fromJSON(needs.check_docs_changes.outputs.docs_added_list) }}
+#        modified: ${{ fromJSON(needs.check_docs_changes.outputs.docs_modified_list) }}
+#        deleted: ${{ fromJSON(needs.check_docs_changes.outputs.docs_deleted_list) }}
     
     steps:
       - name: Print matrix from new process
