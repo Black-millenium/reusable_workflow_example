@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       docs_changed: ${{ steps.docs-changes.outputs.docs }}
-      docs_changes_list: ${{ steps.docs-changes.outputs.changed_files }}
+      docs_changes_list: ${{ steps.docs-changes.outputs.docs_files }}
     
     steps:
       - name: Check changed files
@@ -18,8 +18,6 @@ jobs:
           filters: |
             docs:
               - 'docs/**/*.md'
-            changed:
-              - added|deleted|modified: 'docs/**/*.md'
     
   process_changed_docs_job:
     runs-on: ubuntu-latest
@@ -30,22 +28,5 @@ jobs:
         md_file: ${{ fromJSON(needs.check_docs_changes.outputs.docs_changes_list) }}
     
     steps:
-      - name: checkout
-        uses: actions/checkout@v1
-    
-      - name: Detect with legacy process
-        run: |
-          git diff --name-status origin/main | sed 's/\t/__/g' > output
-          cat output
-          
-      - name: set-matrix
-        run: echo $(cat output|jq -cnR '[inputs | select(length>0)]')
-        
-      - name: Sort
-        run: |
-          cat output | awk -F__ '/^A__/ { print $2 }' 
-          cat output | awk -F__ '/^M__/ { print $2 }' 
-          cat output | awk -F__ '/^D__/ { print $2 }' 
-          
       - name: Print matrix from new process
         run: echo "${{ matrix.md_file }}"
