@@ -18,11 +18,11 @@ jobs:
               - 'docs/**/*.md'
       
       - name: Write true check result to output
-        if: ${{ steps.docs-changes.outputs.docs }} == true
+        if: ${{ steps.docs-changes.outputs.docs }} == 'true'
         run: echo "changed=true" >> $GITHUB_OUTPUT
         
       - name: Write false check result to output
-        if: ${{ steps.docs-changes.outputs.docs }} == false
+        if: ${{ steps.docs-changes.outputs.docs }} == 'false'
         run: echo "changed=false" >> $GITHUB_OUTPUT
 
   process_changed_docs_job:
