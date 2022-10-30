@@ -18,7 +18,6 @@ jobs:
               - 'docs/**/*.md'
       
       - name: Write check result to output
-        if: steps.docs-changes.outputs.docs == 'true'
         run: echo "changed=" ${{ steps.docs-changes.outputs.docs }} >> $GITHUB_OUTPUT
 
   process_changed_docs_job:
