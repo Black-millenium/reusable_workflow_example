@@ -7,18 +7,17 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       docs_changed: ${{ steps.docs-changes.outputs.docs }}
-      docs_changes_list: ${{ steps.docs-changes.outputs.changed }}
+      docs_changes_list: ${{ steps.docs-changes.outputs.docs_files }}
     
     steps:
       - name: Check changed files
         uses: dorny/paths-filter@v2
         id: docs-changes
         with:
+          list-files: json
           filters: |
             docs:
               - 'docs/**/*.md'
-            changed: 
-              - added|modified|deleted: 'docs/**/*.md'
     
   process_changed_docs_job:
     runs-on: ubuntu-latest
