@@ -6,7 +6,7 @@ jobs:
   check_docs_changes:
     runs-on: ubuntu-latest
     outputs:
-      docs_changed: ${{steps.docs-changes.outputs.docs}}
+      docs_changed: ${{steps.changes.outputs.changed}}
     
     steps:
       - name: Check changed files
@@ -16,6 +16,10 @@ jobs:
           filters: |
             docs:
               - 'docs/**/*.md'
+              
+      - name: Write check result to outputs
+        id: changes
+        run: echo "changed=${{ steps.docs-changes.outputs.docs }}" >> $GITHUB_OUTPUT
 
   process_changed_docs_job:
     runs-on: ubuntu-latest
