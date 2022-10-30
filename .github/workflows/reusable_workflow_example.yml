@@ -4,8 +4,17 @@ on: workflow_call
 
 jobs:
   anyone_job:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     
     steps:
-      - name: Do something
-        run: echo "So something"
+      - name: PR opened
+        run: echo "PR opened"
+        
+  another_job:
+    if: github.event.pull_request.merged == false
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: PR closed
+        run: echo "PR closed"
