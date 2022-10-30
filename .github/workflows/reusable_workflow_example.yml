@@ -18,3 +18,12 @@ jobs:
       - name: Start job because docs was changed
         if: steps.docs-changes.outputs.docs == 'true'
         run: echo "Docs was changed"
+
+  process_changed_docs_job:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Process changed docs
+        if: jobs.docs_changed_job.steps.docs-changed.outputs.docs == 'true'
+        run: echo "Process docs"
+    
