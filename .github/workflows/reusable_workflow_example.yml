@@ -16,14 +16,11 @@ jobs:
           filters: |
             docs:
               - 'docs/**/*.md'
-      
-      - name: Write check result to output
-        run: echo "changed=${{ steps.docs-changes.outputs.docs }}" >> $GITHUB_OUTPUT
 
   process_changed_docs_job:
     runs-on: ubuntu-latest
     needs: check_docs_changes
-    #if: needs.check_docs_changes.outputs.docs_changed == true
+    if: needs.check_docs_changes.outputs.docs_changed == true
     
     steps:
       - name: Print variable
