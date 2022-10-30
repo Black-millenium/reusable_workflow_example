@@ -27,6 +27,9 @@ jobs:
         md_file: ${{ fromJSON(needs.check_docs_changes.outputs.docs_changes_list) }}
     
     steps:
+      - name: checkout
+        uses: actions/checkout@v1
+    
       - name: Detect with legacy process
         run: |
           git diff --name-status origin/main | sed 's/\t/__/g' > output
