@@ -3,8 +3,11 @@ name: Reusable workflow
 on: workflow_call
 
 jobs:
-  docs_changed_job:
+  check_docs_changes:
     runs-on: ubuntu-latest
+    outputs:
+      docs_changed: ${{ steps.docs-changes.outputs.changed }}
+      test_out: test_var
     
     steps:
       - name: Check changed files
@@ -15,15 +18,22 @@ jobs:
             docs:
               - 'docs/**/*.md'
       
-      - name: Start job because docs was changed
+      - name: Write check result to output
         if: steps.docs-changes.outputs.docs == 'true'
-        run: echo "Docs was changed"
+        run: echo "changed=" ${{ steps.docs-changes.outputs.docs }} >> $GITHUB_OUTPUT
+        
+      - name: Write test variable
+        run: echo "test_var=test"
 
   process_changed_docs_job:
     runs-on: ubuntu-latest
+    needs: check_docs_changes
+    if: ${{ needs.check_docs_changes.outputs.docs_changed }} == 'true'
     
     steps:
       - name: Process changed docs
-        if: docs_changed_job.steps.docs-changed.outputs.docs == 'true'
         run: echo "Process docs"
+        
+      - name: Echo test variable
+        run: echo ${{ needs.check_docs_changes.outputs.test_out }}
     
