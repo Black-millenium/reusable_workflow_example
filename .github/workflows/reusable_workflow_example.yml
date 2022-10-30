@@ -24,8 +24,8 @@ jobs:
     if: needs.check_docs_changes.outputs.docs_changed == 'true'
     strategy:
       matrix:
-        md_files: ${{ fromJSON(needs.check_docs_changes.outputs.docs_changes_list) }}
+        md_file: ${{ fromJSON(needs.check_docs_changes.outputs.docs_changes_list) }}
     
     steps:
       - name: Print md_files
-        run: echo md_files
+        run: echo "${{ matrix.md_file }}
