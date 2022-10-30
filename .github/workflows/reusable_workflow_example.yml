@@ -4,7 +4,7 @@ on: workflow_call
 
 jobs:
   pr_created_job:
-    if: github.event.pull_request.opened == true
+    if: github.event.pull_request.created == true
     runs-on: ubuntu-latest
     
     steps:
@@ -24,5 +24,5 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: PR closed
-        run: echo "PR closed"
+      - name: PR declined
+        run: echo "PR declined"
