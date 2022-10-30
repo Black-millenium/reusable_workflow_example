@@ -40,4 +40,6 @@ jobs:
       - name: Print matrix from new process
         run: |
           echo "${{ matrix.md_file }}"
-          echo "${{ needs.check_docs_changes.outputs.docs_added_list }}"
+          echo "${{ fromJSON(needs.check_docs_changes.outputs.docs_added_list) }}"
+          echo "${{ fromJSON(needs.check_docs_changes.outputs.docs_modified_list) }}"
+          echo "${{ fromJSON(needs.check_docs_changes.outputs.docs_deleted_list) }}"
