@@ -38,15 +38,15 @@ jobs:
     
     steps:
       - name: Check added files
-        if: ${{ contains(fromJSON(needs.check_docs_changes.outputs.docs_added_list), md_file) }} == 'true'
+        if: ${{ contains(fromJSON(needs.check_docs_changes.outputs.docs_added_list), ${{ matrix.md_file }}) }} == 'true'
         run: echo "ENV_OPERATION=add" >> $GITHUB_ENV
         
       - name: Check modified files
-        if: ${{ contains(fromJSON(needs.check_docs_changes.outputs.docs_modified_list), md_file) }} == 'true'
+        if: ${{ contains(fromJSON(needs.check_docs_changes.outputs.docs_modified_list), ${{ matrix.md_file }}) }} == 'true'
         run: echo "ENV_OPERATION=update" >> $GITHUB_ENV
         
       - name: Check deleted files
-        if: ${{ contains(fromJSON(needs.check_docs_changes.outputs.docs_deleted_list), md_file) }} == 'true'
+        if: ${{ contains(fromJSON(needs.check_docs_changes.outputs.docs_deleted_list), ${{ matrix.md_file }}) }} == 'true'
         run: echo "ENV_OPERATION=delete" >> $GITHUB_ENV
         
       - name: Print info
