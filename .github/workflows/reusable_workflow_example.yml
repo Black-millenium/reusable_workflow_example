@@ -38,7 +38,7 @@ jobs:
     
     steps:
       - name: Debgu added files
-        run: echo "${{ needs.check_docs_changes.outputs.docs_added_list }}, ${{ matrix.md_file }}, ${{ contains(fromJSON(needs.check_docs_changes.outputs.docs_added_list), matrix.md_file) }}
+        run: echo "${{ needs.check_docs_changes.outputs.docs_added_list }}, ${{ matrix.md_file }}, ${{ contains(fromJSON(needs.check_docs_changes.outputs.docs_added_list), matrix.md_file) }}"
     
       - name: Check added files
         if: ${{ contains(fromJSON(needs.check_docs_changes.outputs.docs_added_list), matrix.md_file) == 'true' }}
