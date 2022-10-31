@@ -37,6 +37,9 @@ jobs:
         md_file: ${{ fromJSON(needs.check_docs_changes.outputs.docs_changed_list) }}
     
     steps:
+      - name: Debgu added files
+        run: echo "${{ needs.check_docs_changes.outputs.docs_modified_list }}, ${{ matrix.md_file }}, ${{ contains(fromJSON(needs.check_docs_changes.outputs.docs_added_list), matrix.md_file) }}
+    
       - name: Check added files
         if: ${{ contains(fromJSON(needs.check_docs_changes.outputs.docs_added_list), matrix.md_file) == 'true' }}
         run: echo "ENV_OPERATION=add" >> $GITHUB_ENV
