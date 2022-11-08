@@ -55,3 +55,7 @@ jobs:
       - name: Print info
         run: |
           echo "Operation: ${{ env.ENV_OPERATION }}; File: ${{ env.ENV_FILE_PATH }}"
+          
+      - name: Print PR status
+        run: |
+          echo "PR Status: ${{ github.event.pull_request.state }}"
