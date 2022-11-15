@@ -5,57 +5,12 @@ on: workflow_call
 jobs:
   check_docs_changes:
     runs-on: ubuntu-latest
-    outputs:
-      docs_changed: ${{ steps.docs-changes.outputs.docs }}
-      docs_changed_list: ${{ steps.docs-changes.outputs.docs_files }}
-      docs_modified_list: ${{ steps.docs-changes.outputs.docs_modified_files }}
-      docs_added_list: ${{ steps.docs-changes.outputs.docs_added_files }}
-      docs_deleted_list: ${{ steps.docs-changes.outputs.docs_deleted_files }}
     
     steps:
-      - name: Check changed files
-        uses: dorny/paths-filter@v2
-        id: docs-changes
-        with:
-          list-files: json
-          filters: |
-            docs:
-              - 'docs/**/*.md'
-            docs_modified:
-              - modified: 'docs/**/*.md'
-            docs_added:
-              - added: 'docs/**/*.md'   
-            docs_deleted:
-              - deleted: 'docs/**/*.md'            
-    
-  process_changed_docs_job:
-    runs-on: ubuntu-latest
-    needs: check_docs_changes
-    if: needs.check_docs_changes.outputs.docs_changed == 'true'
-    strategy:
-      matrix:
-        md_file: ${{ fromJSON(needs.check_docs_changes.outputs.docs_changed_list) }}
-    
-    steps:
-      - name: Write file name to env
-        run: echo "ENV_FILE_PATH=${{ matrix.md_file }}" >> $GITHUB_ENV
-      
-      - name: Check added files
-        if: ${{ contains(fromJSON(needs.check_docs_changes.outputs.docs_added_list), env.ENV_FILE_PATH) == true }}
-        run: echo "ENV_OPERATION=add" >> $GITHUB_ENV
-        
-      - name: Check modified files
-        if: ${{ contains(fromJSON(needs.check_docs_changes.outputs.docs_modified_list), env.ENV_FILE_PATH) == true }}
-        run: echo "ENV_OPERATION=update" >> $GITHUB_ENV
-        
-      - name: Check deleted files
-        if: ${{ contains(fromJSON(needs.check_docs_changes.outputs.docs_deleted_list), env.ENV_FILE_PATH) == true }}
-        run: echo "ENV_OPERATION=delete" >> $GITHUB_ENV
-        
-      - name: Print info
+      - name: Show pull-request
         run: |
-          echo "Operation: ${{ env.ENV_OPERATION }}; File: ${{ env.ENV_FILE_PATH }}"
-          
-      - name: Print PR status
-        run: |
-          echo "PR Status: ${{ github.event.pull_request.state }}"
+          data=$(curl -s -X GET -G "${{ github.event.pull_request.url }}/files?per_page=100&page=${page}" \
+              --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+              --header 'Accept: application/vnd.github+json' \
+              | jq -r '.[] | .status + " " + .contents_url')
+          echo $data
