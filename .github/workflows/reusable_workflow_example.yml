@@ -2,6 +2,9 @@ name: Reusable workflow
 
 on: workflow_call
 
+env:
+  ENV_FILE_PATH: ""
+
 jobs:
   check_docs_changes:
     runs-on: ubuntu-latest
