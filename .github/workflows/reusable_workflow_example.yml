@@ -18,4 +18,5 @@ jobs:
           
       - name: show base branch
         run: |
-          echo ${{ env.GITHUB_BASE_REF }}
+          echo ${{ github.event.pull_request.base.ref }}
+          
