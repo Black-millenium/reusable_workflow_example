@@ -14,8 +14,7 @@ jobs:
             data=$(curl -s -X GET -G "${{ github.event.pull_request.url }}/files?per_page=100&page=${page}" \
               --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
               --header 'Accept: application/vnd.github+json' \
-              | jq -r '.[]')
-              #| jq -r '.[] | .status + " " + .contents_url')
+              | jq -r '.[] | .status + " " + .contents_url')
             [[ $data ]] || break;
             echo "$data" >> output
             ((page++))
@@ -28,4 +27,6 @@ jobs:
           
       - name: Replace ref to base
         run: |
+          echo "ENV_FILE_PATH=${$(cat output)/?ref=*/?res=${{ github.event.pull_request.base.ref }}}" >> $GITHUB_ENV
+          echo ${{ env.ENV_FILE_PATH }}
           
