@@ -14,7 +14,8 @@ jobs:
             data=$(curl -s -X GET -G "${{ github.event.pull_request.url }}/files?per_page=100&page=${page}" \
               --header 'Authorization: Bearer ${{ secrets.CORE_GITHUB_TOKEN }}' \
               --header 'Accept: application/vnd.github+json' \
-              | jq -r '.[] | .status + " " + .contents_url')
+              | jq -r '.[]')
+              #| jq -r '.[] | .status + " " + .contents_url')
             [[ $data ]] || break;
             echo "$data" >> output
             ((page++))
@@ -25,10 +26,6 @@ jobs:
           
           echo $(cat output)
           
-      - name: show base file
+      - name: Replace ref to base
         run: |
-          data=$(curl -s -X GET -G "https://api.github.com/repos/Black-millenium/git_workflow_test/contents/docs%2Ffor-modification-1.md?ref=${{ github.event.pull_request.base.ref }}" \
-              --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-              --header 'Accept: application/vnd.github+json' \
-              | jq -r '.[]')
-          echo $data
+          
