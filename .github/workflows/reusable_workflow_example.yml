@@ -15,3 +15,7 @@ jobs:
               | jq -r '.[]')
               #| jq -r '.[] | .status + " " + .contents_url')
           echo $data
+          
+      - name: show base branch
+        run: |
+          echo ${{ env.GITHUB_BASE_REF }}
