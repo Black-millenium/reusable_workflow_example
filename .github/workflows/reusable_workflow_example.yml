@@ -27,7 +27,6 @@ jobs:
           
       - name: Replace ref to base
         run: |
-          echo ${$(cat output)/?ref=*/?ref=main}
-          #echo "ENV_FILE_PATH=$(${$(cat output)/?ref=*/?ref=${{ github.event.pull_request.base.ref }}})" >> $GITHUB_ENV
+          echo sed 's/.md?ref=.*/.md?ref=${{ github.event.pull_request.base.ref }}/'
           echo ${{ env.ENV_FILE_PATH }}
           
