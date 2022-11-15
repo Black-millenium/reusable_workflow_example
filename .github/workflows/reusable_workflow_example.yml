@@ -27,7 +27,7 @@ jobs:
           
       - name: Replace ref to base
         run: |
-          echo "${$(cat output)/?ref=*/?ref=${{ github.event.pull_request.base.ref }}}"
+          echo ${$(cat output)/?ref=*/?ref=${{ github.event.pull_request.base.ref }}}
           #echo "ENV_FILE_PATH=$(${$(cat output)/?ref=*/?ref=${{ github.event.pull_request.base.ref }}})" >> $GITHUB_ENV
           echo ${{ env.ENV_FILE_PATH }}
           
