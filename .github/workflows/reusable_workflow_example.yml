@@ -2,6 +2,9 @@ name: Reusable workflow
 
 on: workflow_call
 
+env:
+  ENV_IS_ROLLBACK: false
+
 jobs:
   check_docs_changes:
     runs-on: ubuntu-latest
@@ -28,7 +31,7 @@ jobs:
       - name: Replace ref to base
         run: |
           echo "ENV_FILE_PATH=$(cat output | sed 's/.md?ref=.*/.md?ref=${{ github.event.pull_request.base.ref }}/')" >> $GITHUB_ENV
-          echo "ENV_IS_ROLLBACK=true" >> $GITHUB_ENV
+          echo "ENV_IS_ROLLBACK='true'" >> $GITHUB_ENV
 
   check_envs:
     runs-on: ubuntu-latest
