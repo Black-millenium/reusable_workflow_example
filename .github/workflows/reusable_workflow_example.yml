@@ -41,5 +41,5 @@ jobs:
       - name: Show env result
         run: |
           echo ${{ env.ENV_FILE_PATH }}
-          echo ${{ env.ENV_IS_ROLLBACK }}
+          echo ${{ env.ENV_IS_ROLLBACK == 'true' }}
           
