@@ -2,44 +2,19 @@ name: Reusable workflow
 
 on: workflow_call
 
-env:
-  ENV_IS_ROLLBACK: false
-
 jobs:
   check_docs_changes:
     runs-on: ubuntu-latest
     
+    env:
+      ENV_IS_ROLLBACK: false
+    
     steps:
-      - name: Show pull-request
-        run: |
-          page=1
-          while true; do
-            data=$(curl -s -X GET -G "${{ github.event.pull_request.url }}/files?per_page=100&page=${page}" \
-              --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-              --header 'Accept: application/vnd.github+json' \
-              | jq -r '.[] | .status + " " + .contents_url')
-            [[ $data ]] || break;
-            echo "$data" >> output
-            ((page++))
-          done
-          
-          sed -i "s/https:\/\/api.github.com//g" output
-          sed -i "s/%2F/\//g" output
-          
-          echo $(cat output)
           
       - name: Replace ref to base
         run: |
-          echo "ENV_FILE_PATH=$(cat output | sed 's/.md?ref=.*/.md?ref=${{ github.event.pull_request.base.ref }}/')" >> $GITHUB_ENV
-          echo "ENV_IS_ROLLBACK='true'" >> $GITHUB_ENV
+          echo "ENV_IS_ROLLBACK=true" >> $GITHUB_ENV
 
-  check_envs:
-    runs-on: ubuntu-latest
-    needs: check_docs_changes
-    
-    steps:
       - name: Show env result
         run: |
-          echo ${{ env.ENV_FILE_PATH }}
-          echo ${{ env.ENV_IS_ROLLBACK == 'true' }}
-          
+          echo ${{ env.ENV_IS_ROLLBACK }}
