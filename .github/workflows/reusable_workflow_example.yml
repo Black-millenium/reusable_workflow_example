@@ -8,6 +8,7 @@ jobs:
     
     env:
       ENV_IS_ROLLBACK: false
+      ENV_TEST_VARIABLE: false
     
     steps:
           
@@ -17,4 +18,4 @@ jobs:
 
       - name: Show env result
         run: |
-          echo ${{ env.ENV_IS_ROLLBACK }}
+          echo ${{ env.ENV_TEST_VARIABLE || env.ENV_IS_ROLLBACK }}
