@@ -18,10 +18,21 @@ jobs:
             data=$(curl -s -X GET -G "${{ github.event.pull_request.url }}/files?per_page=100&page=${page}" \
               --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
               --header 'Accept: application/vnd.github+json' \
-              | jq -r '.[]')
+              | jq -r '.[] | .status + " " + .contents_url + " " + .previous_filename')
             [[ $data ]] || break;
             echo "$data" >> output
             ((page++))
           done
-
-          cat output
+          
+          sed -i "s/https:\/\/api.github.com//g" output
+          sed -i "s/%2F/\//g" output
+          
+          cat output | while read line 
+          do
+              if [[ $line == *"docs"*".md"* ]]; then
+                echo "$line" >> md_files
+              fi
+          done
+          rm output
+          
+          cat md_files
