@@ -11,11 +11,18 @@ jobs:
       ENV_TEST_VARIABLE: false
     
     steps:
-          
-      - name: Replace ref to base
+      - name: Detect changes
         run: |
-          echo "ENV_IS_ROLLBACK=true" >> $GITHUB_ENV
-
-      - name: Show env result
-        run: |
-          echo ${{ env.ENV_TEST_VARIABLE == 'true' || env.ENV_IS_ROLLBACK == 'true' }}
+            page=1
+            while true; do
+              data=$(curl -s -X GET -G "${{ github.event.pull_request.url }}/files?per_page=100&page=${page}" \
+                --header 'Authorization: Bearer ${{ secrets.CORE_GITHUB_TOKEN }}' \
+                --header 'Accept: application/vnd.github+json' \
+                # | jq -r '.[] | .status + " " + .contents_url')
+                | jq -r '.[]')
+              [[ $data ]] || break;
+              echo "$data" >> output
+              ((page++))
+            done
+            
+            cat output
