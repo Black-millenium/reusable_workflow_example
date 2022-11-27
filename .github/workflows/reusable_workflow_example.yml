@@ -18,7 +18,6 @@ jobs:
             data=$(curl -s -X GET -G "${{ github.event.pull_request.url }}/files?per_page=100&page=${page}" \
               --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
               --header 'Accept: application/vnd.github+json' \
-              # | jq -r '.[] | .status + " " + .contents_url')
               | jq -r '.[]')
             [[ $data ]] || break;
             echo "$data" >> output
