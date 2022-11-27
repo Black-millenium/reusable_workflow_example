@@ -13,16 +13,16 @@ jobs:
     steps:
       - name: Detect changes
         run: |
-            page=1
-            while true; do
-              data=$(curl -s -X GET -G "${{ github.event.pull_request.url }}/files?per_page=100&page=${page}" \
-                --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-                --header 'Accept: application/vnd.github+json' \
-                # | jq -r '.[] | .status + " " + .contents_url')
-                | jq -r '.[]')
-              [[ $data ]] || break;
-              echo "$data" >> output
-              ((page++))
-            done
-            
-            cat output
+          page=1
+          while true; do
+            data=$(curl -s -X GET -G "${{ github.event.pull_request.url }}/files?per_page=100&page=${page}" \
+              --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+              --header 'Accept: application/vnd.github+json' \
+              # | jq -r '.[] | .status + " " + .contents_url')
+              | jq -r '.[]')
+            [[ $data ]] || break;
+            echo "$data" >> output
+            ((page++))
+          done
+
+          cat output
