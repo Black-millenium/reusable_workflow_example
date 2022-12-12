@@ -22,7 +22,7 @@ jobs:
             [[ $data ]] || break;
             echo "$data" >> output
             
-            echo {{ "$data" }} 
+            echo {{ $data }} 
             ((page++))
           done
           
