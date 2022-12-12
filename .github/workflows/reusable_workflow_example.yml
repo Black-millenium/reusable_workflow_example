@@ -21,7 +21,8 @@ jobs:
               | jq -r '.[]') # | .status + " " + .contents_url + " " + .previous_filename
             [[ $data ]] || break;
             echo "$data" >> output
-            echo $data
+            
+            echo {{ "$data" }} 
             ((page++))
           done
           
